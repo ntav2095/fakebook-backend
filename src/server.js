@@ -54,9 +54,9 @@ app.use('/', express.static('public'))
 app.use(router)
 
 testConnectDB()
-
-httpServer.listen(9999, () => {
-    console.log('Server is running on port ', 9999)
+const x = process.env.PORT || 3000
+httpServer.listen(x, () => {
+    console.log('Server is running on port ', x)
 })
 
 // io server
