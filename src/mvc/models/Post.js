@@ -18,7 +18,7 @@ Post.init({
     },
     avatar: {
         type: DataTypes.TEXT,
-        defaultValue: 'http://localhost:9999/images/no-avatar.png'
+        defaultValue: 'https://res.cloudinary.com/dqz4j2zua/image/upload/v1655901067/hbltcwn8jflad4upsxxz.png'
     },
     comments: {
         type: DataTypes.TEXT,
