@@ -17,9 +17,9 @@ router.get('/api/user/get-user/:email', verifyJWT, controllers.getUser) //
 // router.post('/api/user/friend-request', verifyJWT, upload.single('photo'), controllers.handleFriendRequest) //
 // router.post('/api/user/change-cover-photo', verifyJWT, upload.single('photo'), controllers.handleChangeCoverPhoto) //
 // router.post('/api/user/change-avatar', verifyJWT, upload.single('photo'), controllers.handleChangeAvatar) //
-router.post('/api/user/friend-request', verifyJWT, cloud.fileUploader.single('photo'), controllers.handleFriendRequest) //
-router.post('/api/user/change-cover-photo', verifyJWT, cloud.fileUploader.single('photo'), controllers.handleChangeCoverPhoto) //
-router.post('/api/user/change-avatar', verifyJWT, cloud.fileUploader.single('photo'), controllers.handleChangeAvatar) //
+router.post('/api/user/friend-request', verifyJWT, cloud.uploadCloud.single('photo'), controllers.handleFriendRequest) //
+router.post('/api/user/change-cover-photo', verifyJWT, cloud.uploadCloud.single('photo'), controllers.handleChangeCoverPhoto) //
+router.post('/api/user/change-avatar', verifyJWT, cloud.uploadCloud.single('photo'), controllers.handleChangeAvatar) //
 
 router.post('/api/user/remove-cover-photo', verifyJWT, controllers.handleRemoveCoverPhoto) //
 router.post('/api/user/remove-avatar', verifyJWT, controllers.handleRemoveAvatar) //
@@ -32,7 +32,7 @@ router.post('/api/notifications/delete-all', verifyJWT, controllers.deleteAllNot
 router.get('/api/post/get-all/:offset', verifyJWT, controllers.getAllPost) // dùng cho trang home: post của bản thân và bạn bè
 router.get('/api/post/user/:email/:offset', verifyJWT, controllers.getUserPost) // lấy 1 người, bản thân hoặc bạn bè hoặc người lạ
 router.get('/api/post/get-one/:id', verifyJWT, controllers.getAPost) // lấy 1 post cụ thể, vì sao không dùng route cho nhanh? lỡ chia sẽ qua link thì sao.
-router.post('/api/post/add', verifyJWT, cloud.fileUploader.single('photo'), controllers.addPost) // thêm 1 post
+router.post('/api/post/add', verifyJWT, cloud.uploadCloud.single('photo'), controllers.addPost) // thêm 1 post
 // router.post('/api/post/add', verifyJWT, upload.single('photo'), controllers.addPost) // thêm 1 post
 router.post('/api/post/comment', verifyJWT, controllers.handleComment) // post vì cần biết ai cmt, like
 router.post('/api/post/like', verifyJWT, controllers.handleLikePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
