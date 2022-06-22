@@ -39,7 +39,7 @@ router.post('/api/post/like', verifyJWT, controllers.handleLikePost) // post vì
 router.post('/api/post/delete/:id', verifyJWT, controllers.handleDeletePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
 
 // SEARCH
-router.get('/api/search/:query', verifyJWT, controllers.handleSearch) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
+router.get('/api/search/:query', verifyJWT, handleRefreshToken, controllers.handleSearch) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
 
 // CHAT
 router.post('/api/chat/send-message', verifyJWT, controllers.handleAddChat)
