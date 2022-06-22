@@ -340,16 +340,16 @@ const handleDeletePost = async (req, res) => {
         //     });
         // }
         const deleteResult = ''
-        if (photo) {
-            await cloudinary.uploader.destroy(photo, function (result) {
-                if (result) {
-                    deleteResult = result
-                } else {
-                    deleteResult = "Khog biet ket qu"
-                }
-            }
-            );
-        }
+        // if (photo) {
+        //     await cloudinary.uploader.destroy(photo, function (result) {
+        //         if (result) {
+        //             deleteResult = result
+        //         } else {
+        //             deleteResult = "Khog biet ket qu"
+        //         }
+        //     }
+        //     );
+        // }
         await post.destroy()
         console.log("handle delete")
 
