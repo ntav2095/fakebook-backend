@@ -6,7 +6,12 @@ const Post = require('../models/Post')
 const Chat = require('../models/Chat')
 const services = require('./services')
 const fs = require('fs')
-
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET
+});
 const NO_AVATAR = "https://res.cloudinary.com/dqz4j2zua/image/upload/v1655901067/hbltcwn8jflad4upsxxz.png"
 
 // LOGIN, LOGOUT, REGISTER
@@ -324,20 +329,24 @@ const handleDeletePost = async (req, res) => {
         const post = await Post.findOne({ where: { id: id, email: email } })
         if (!post) return res.status(400).json({ ok: false, msg: "Post does not exist" })
         const photo = post.photo;
+        // if (photo) {
+        //     const photoDir = path.join(__dirname, '..', '..', '..', 'public', photo.slice(photo.indexOf("images")))
+        //     console.log(photoDir)
+        //     fs.unlink(photoDir, function (err) {
+        //         if (err && err.code == 'ENOENT') {
+        //             // file doens't exist
+        //             console.info("File doesn't exist, won't remove it.");
+        //         } else if (err) {
+        //             // other errors, e.g. maybe we don't have enough permission
+        //             console.error("Error occurred while trying to remove file");
+        //         } else {
+        //             console.info(`removed`);
+        //         }
+        //     });
+        // }
+
         if (photo) {
-            const photoDir = path.join(__dirname, '..', '..', '..', 'public', photo.slice(photo.indexOf("images")))
-            console.log(photoDir)
-            fs.unlink(photoDir, function (err) {
-                if (err && err.code == 'ENOENT') {
-                    // file doens't exist
-                    console.info("File doesn't exist, won't remove it.");
-                } else if (err) {
-                    // other errors, e.g. maybe we don't have enough permission
-                    console.error("Error occurred while trying to remove file");
-                } else {
-                    console.info(`removed`);
-                }
-            });
+            cloudinary.uploader.destroy(photo, function (result) { console.log(result) });
         }
         await post.destroy()
         console.log("handle delete")
