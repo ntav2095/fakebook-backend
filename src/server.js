@@ -38,7 +38,8 @@ global.io = io
 app.use(credentials)
 
 // app.use(cors({ origin: true, credentials: true }))
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
+app.use(cors())
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
@@ -54,9 +55,9 @@ app.use('/', express.static('public'))
 app.use(router)
 
 testConnectDB()
-const x = process.env.PORT || 3000
-httpServer.listen(x, () => {
-    console.log('Server is running on port ', x)
+const port = process.env.PORT || 3000
+httpServer.listen(port, () => {
+    console.log('Server is running on port ', port)
 })
 
 // io server

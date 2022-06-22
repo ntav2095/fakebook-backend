@@ -1,6 +1,6 @@
 const Chat = require('./Chat.js')
-// const User = require('./User.js')
-// const Post = require('./Post.js')
+const User = require('./User.js')
+const Post = require('./Post.js')
 const { sequelize } = require('./config')
 
 
