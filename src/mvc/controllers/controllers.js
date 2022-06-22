@@ -7,6 +7,8 @@ const Chat = require('../models/Chat')
 const services = require('./services')
 const fs = require('fs')
 
+const NO_AVATAR = "https://res.cloudinary.com/dqz4j2zua/image/upload/v1655901067/hbltcwn8jflad4upsxxz.png"
+
 // LOGIN, LOGOUT, REGISTER
 const register = async (req, res) => {
     try {
@@ -82,8 +84,7 @@ const login = async (req, res) => {
                         name: foundUser.name,
                         accessToken: accessToken,
                         friends: friends,
-                        avatar: "https://i.pinimg.com/474x/0e/3e/d0/0e3ed05ff407671bdebf77b53ce0e0b9.jpg",
-                        // avatar: foundUser.avatar,
+                        avatar: foundUser.avatar ? foundUser.avatar : NO_AVATAR,
                         coverPhoto: foundUser.coverPhoto,
                         notifications: notifications,
                         friendRequest: frRequest,
@@ -448,7 +449,7 @@ const handleChangeCoverPhoto = async (req, res) => {
 
         const file = req.file
         if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
-        const coverPhoto = 'http://localhost:9999/images/' + file.filename
+        const coverPhoto = file.path
         const user = await User.findOne({ where: { email: authEmail } })
         user.coverPhoto = coverPhoto
 
@@ -494,7 +495,7 @@ const handleChangeAvatar = async (req, res) => {
 
         const file = req.file
         if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
-        const avatar = 'http://localhost:9999/images/' + file.filename
+        const avatar = file.path
         const user = await User.findOne({ where: { email: authEmail } })
         user.avatar = avatar
 

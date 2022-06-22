@@ -14,9 +14,13 @@ router.post('/api/logout', controllers.logout)
 
 // USER
 router.get('/api/user/get-user/:email', verifyJWT, controllers.getUser) //
-router.post('/api/user/friend-request', verifyJWT, upload.single('photo'), controllers.handleFriendRequest) //
-router.post('/api/user/change-cover-photo', verifyJWT, upload.single('photo'), controllers.handleChangeCoverPhoto) //
-router.post('/api/user/change-avatar', verifyJWT, upload.single('photo'), controllers.handleChangeAvatar) //
+// router.post('/api/user/friend-request', verifyJWT, upload.single('photo'), controllers.handleFriendRequest) //
+// router.post('/api/user/change-cover-photo', verifyJWT, upload.single('photo'), controllers.handleChangeCoverPhoto) //
+// router.post('/api/user/change-avatar', verifyJWT, upload.single('photo'), controllers.handleChangeAvatar) //
+router.post('/api/user/friend-request', verifyJWT, fileUploader.single('photo'), controllers.handleFriendRequest) //
+router.post('/api/user/change-cover-photo', verifyJWT, fileUploader.single('photo'), controllers.handleChangeCoverPhoto) //
+router.post('/api/user/change-avatar', verifyJWT, fileUploader.single('photo'), controllers.handleChangeAvatar) //
+
 router.post('/api/user/remove-cover-photo', verifyJWT, controllers.handleRemoveCoverPhoto) //
 router.post('/api/user/remove-avatar', verifyJWT, controllers.handleRemoveAvatar) //
 
