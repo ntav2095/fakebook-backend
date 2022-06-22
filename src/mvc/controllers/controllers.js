@@ -281,9 +281,7 @@ const addPost = async (req, res) => {
         let photo = ''
         const file = req.file
         if (file) {
-            // photo = 'http://localhost:9999/images/' + file.filename
-            photo = ""
-            console.log(__dirname, file.filename)
+            photo = file.path
         }
 
         const x = JSON.stringify([])

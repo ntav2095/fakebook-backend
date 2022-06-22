@@ -4,6 +4,7 @@ const controllers = require('../mvc/controllers/controllers')
 const verifyJWT = require('../middlewares/verifyJWT')
 const router = express.Router()
 const handleRefreshToken = require('../middlewares/handleRefreshToken')
+const fileUploader = require('../configs/cloudinary.config');
 
 router.post('/api/register', controllers.register)
 router.post('/api/login', controllers.login)
@@ -27,7 +28,8 @@ router.post('/api/notifications/delete-all', verifyJWT, controllers.deleteAllNot
 router.get('/api/post/get-all/:offset', verifyJWT, controllers.getAllPost) // dùng cho trang home: post của bản thân và bạn bè
 router.get('/api/post/user/:email/:offset', verifyJWT, controllers.getUserPost) // lấy 1 người, bản thân hoặc bạn bè hoặc người lạ
 router.get('/api/post/get-one/:id', verifyJWT, controllers.getAPost) // lấy 1 post cụ thể, vì sao không dùng route cho nhanh? lỡ chia sẽ qua link thì sao.
-router.post('/api/post/add', verifyJWT, upload.single('photo'), controllers.addPost) // thêm 1 post
+router.post('/api/post/add', verifyJWT, fileUploader.single('photo'), controllers.addPost) // thêm 1 post
+// router.post('/api/post/add', verifyJWT, upload.single('photo'), controllers.addPost) // thêm 1 post
 router.post('/api/post/comment', verifyJWT, controllers.handleComment) // post vì cần biết ai cmt, like
 router.post('/api/post/like', verifyJWT, controllers.handleLikePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
 router.post('/api/post/delete/:id', verifyJWT, controllers.handleDeletePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
@@ -38,5 +40,7 @@ router.get('/api/search/:query', verifyJWT, controllers.handleSearch) // post v�
 // CHAT
 router.post('/api/chat/send-message', verifyJWT, controllers.handleAddChat)
 router.post('/api/chat/get-chat', verifyJWT, controllers.handleGetChat)
+
+
 
 module.exports = router

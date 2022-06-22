@@ -34178,3 +34178,5 @@
 17:04:04 22:06:2022	53243b81-8ef5-4deb-9d87-8b0477f943cb	GET	undefined	/api/post/get-all
 17:04:32 22:06:2022	9975027e-e992-43e9-bb9f-42db5d5c32f4	GET	undefined	/api/post/get-all/1
 17:04:32 22:06:2022	34ce9eb8-9f5d-4ada-bc1a-6315e791d36e	GET	undefined	/favicon.ico
+19:31:05 22:06:2022	fa3f34c5-2776-409b-8dda-b4bb13c43572	POST	undefined	/api/post/add
+19:35:18 22:06:2022	641448a6-a797-4039-a8de-f6490d5308ba	POST	undefined	/api/post/add
