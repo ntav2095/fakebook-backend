@@ -6,6 +6,7 @@ var whitelist = [
     'http://localhost:3000',
     'http://127.0.0.1:3306',
     'http://localhost:3306',
+    "https://chipper-crumble-5a960b.netlify.app",
     process.env.REAL_API
 ]
 var corsOptions = {
