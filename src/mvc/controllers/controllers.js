@@ -6,7 +6,7 @@ const Post = require('../models/Post')
 const Chat = require('../models/Chat')
 const services = require('./services')
 const fs = require('fs')
-// const { cloudinary } = require("../../configs/cloudinary.config")
+const cloud = require("../../configs/cloudinary.config")
 const NO_AVATAR = "https://res.cloudinary.com/dqz4j2zua/image/upload/v1655901067/hbltcwn8jflad4upsxxz.png"
 
 // LOGIN, LOGOUT, REGISTER
@@ -340,16 +340,16 @@ const handleDeletePost = async (req, res) => {
         //     });
         // }
         const deleteResult = ''
-        // if (photo) {
-        //     await cloudinary.uploader.destroy(photo, function (result) {
-        //         if (result) {
-        //             deleteResult = result
-        //         } else {
-        //             deleteResult = "Khog biet ket qu"
-        //         }
-        //     }
-        //     );
-        // }
+        if (photo) {
+            await cloud.cloudinary.uploader.destroy(photo, function (result) {
+                if (result) {
+                    deleteResult = result
+                } else {
+                    deleteResult = "Khog biet ket qu"
+                }
+            }
+            );
+        }
         await post.destroy()
         console.log("handle delete")
 
