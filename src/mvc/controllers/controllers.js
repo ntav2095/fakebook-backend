@@ -136,7 +136,7 @@ const getUser = async (req, res) => {
 
         const friends = await services.getFriends(JSON.parse(user.friends))
         const friendRequest = await services.getFriendRequest(JSON.parse(user.friendRequest))
-
+        const cookies = req.cookies ? req.cookies : "khong co cookies"
         return res.status(200).json({
             ok: true,
             data: {
@@ -149,7 +149,7 @@ const getUser = async (req, res) => {
                 friendRequest: friendRequest,
                 avatar: user.avatar,
                 coverPhoto: user.coverPhoto,
-                cookies: JSON.stringify(req.cookies)
+                cookies: JSON.stringify(cookies)
             }
         })
 
