@@ -4,7 +4,7 @@ const controllers = require('../mvc/controllers/controllers')
 const verifyJWT = require('../middlewares/verifyJWT')
 const router = express.Router()
 const handleRefreshToken = require('../middlewares/handleRefreshToken')
-const fileUploader = require('../configs/cloudinary.config');
+const { fileUploader } = require('../configs/cloudinary.config');
 
 router.post('/api/register', controllers.register)
 router.post('/api/login', controllers.login)

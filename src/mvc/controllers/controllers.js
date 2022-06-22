@@ -6,12 +6,7 @@ const Post = require('../models/Post')
 const Chat = require('../models/Chat')
 const services = require('./services')
 const fs = require('fs')
-const cloudinary = require('cloudinary').v2;
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_KEY,
-    api_secret: process.env.CLOUD_SECRET
-});
+const { cloudinary } = require("../../configs/cloudinary.config")
 const NO_AVATAR = "https://res.cloudinary.com/dqz4j2zua/image/upload/v1655901067/hbltcwn8jflad4upsxxz.png"
 
 // LOGIN, LOGOUT, REGISTER
