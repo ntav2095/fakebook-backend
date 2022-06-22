@@ -146,7 +146,9 @@ const getUser = async (req, res) => {
                 name: user.name,
                 avatar: user.avatar,
                 profilePhoto: user.profilePhoto,
-                friendRequest: friendRequest
+                friendRequest: friendRequest,
+                avatar: user.avatar,
+                coverPhoto: user.coverPhoto
             }
         })
 
