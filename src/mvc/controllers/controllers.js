@@ -340,12 +340,13 @@ const handleDeletePost = async (req, res) => {
         //     });
         // }
         const deleteResult = ''
-        if (photo) {
-            cloud.cloudinary.uploader.destroy(photo, function (result) {
-                if (result) {
-                    deleteResult = result
+        if (photo.slice(photo.indexOf(".jpg"))) {
+            await cloud.cloudinary.uploader.destroy(photo, function (error, result) {
+                if (error) {
+                    console.log(error)
+                    deleteResult = error.message
                 } else {
-                    deleteResult = "Khog biet ket qu"
+                    deleteResult = result
                 }
             }
             );
