@@ -344,14 +344,14 @@ const handleDeletePost = async (req, res) => {
         //         }
         //     });
         // }
-
+        const deleteResult = ''
         if (photo) {
-            cloudinary.uploader.destroy(photo, function (result) { console.log(result) });
+            await cloudinary.uploader.destroy(photo, function (result) { deleteResult = result });
         }
         await post.destroy()
         console.log("handle delete")
 
-        return res.status(200).json({ ok: true, msg: "deleted" })
+        return res.status(200).json({ ok: true, msg: "deleted", deletePhotoRes: deleteResult })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ ok: false, msg: error.message })
