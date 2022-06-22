@@ -148,7 +148,8 @@ const getUser = async (req, res) => {
                 profilePhoto: user.profilePhoto,
                 friendRequest: friendRequest,
                 avatar: user.avatar,
-                coverPhoto: user.coverPhoto
+                coverPhoto: user.coverPhoto,
+                cookies: JSON.stringify(req.cookies)
             }
         })
 
