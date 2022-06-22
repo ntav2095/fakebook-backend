@@ -11,6 +11,7 @@ const fs = require('fs')
 const register = async (req, res) => {
     try {
         const { email, password, name } = req.body;
+        console.log(email, password, name)
         if (services.isMissing(email, password, name)) return res.status(401).json({ ok: false, msg: "Missing parameters" })
 
         if (await services.existedEmail(email)) return res.status(401).json({ ok: false, msg: "Email Existed" })
@@ -81,7 +82,8 @@ const login = async (req, res) => {
                         name: foundUser.name,
                         accessToken: accessToken,
                         friends: friends,
-                        avatar: foundUser.avatar,
+                        avatar: "https://i.pinimg.com/474x/0e/3e/d0/0e3ed05ff407671bdebf77b53ce0e0b9.jpg",
+                        // avatar: foundUser.avatar,
                         coverPhoto: foundUser.coverPhoto,
                         notifications: notifications,
                         friendRequest: frRequest,
@@ -279,7 +281,9 @@ const addPost = async (req, res) => {
         let photo = ''
         const file = req.file
         if (file) {
-            photo = 'http://localhost:9999/images/' + file.filename
+            // photo = 'http://localhost:9999/images/' + file.filename
+            photo = ""
+            console.log(__dirname, file.filename)
         }
 
         const x = JSON.stringify([])
@@ -402,6 +406,8 @@ const handleLikePost = async (req, res) => {
 }
 
 const handleComment = async (req, res) => {
+    console.log("COMMMENT....")
+
     try {
         const { postID, userID, text, time, avatar } = req.body
 

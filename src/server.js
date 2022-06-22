@@ -1,7 +1,7 @@
 // importing server libraries
 const express = require('express')
 const { createServer } = require('http')
-const { Server } = require('socket.io')
+// const { Server } = require('socket.io')
 
 // importing middlewares
 const bodyParser = require('body-parser')
@@ -30,16 +30,16 @@ const ioOptions = {
 const app = express()
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, ioOptions);
-global.io = io
+// const io = new Server(httpServer, ioOptions);
+// global.io = io
 
 
 // using middlewares
 app.use(credentials)
 
 // app.use(cors({ origin: true, credentials: true }))
-// app.use(cors(corsOptions))
-app.use(cors())
+app.use(cors(corsOptions))
+// app.use(cors())
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
