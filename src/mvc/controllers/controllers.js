@@ -6,7 +6,7 @@ const Post = require('../models/Post')
 const Chat = require('../models/Chat')
 const services = require('./services')
 const fs = require('fs')
-const { cloudinary } = require("../../configs/cloudinary.config")
+// const { cloudinary } = require("../../configs/cloudinary.config")
 const NO_AVATAR = "https://res.cloudinary.com/dqz4j2zua/image/upload/v1655901067/hbltcwn8jflad4upsxxz.png"
 
 // LOGIN, LOGOUT, REGISTER
