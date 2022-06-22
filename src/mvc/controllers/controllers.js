@@ -341,7 +341,7 @@ const handleDeletePost = async (req, res) => {
         // }
         const deleteResult = ''
         if (photo) {
-            await cloud.cloudinary.uploader.destroy(photo, function (result) {
+            cloud.cloudinary.uploader.destroy(photo, function (result) {
                 if (result) {
                     deleteResult = result
                 } else {
