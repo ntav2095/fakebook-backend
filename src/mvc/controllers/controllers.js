@@ -340,8 +340,17 @@ const handleDeletePost = async (req, res) => {
         //     });
         // }
         const deleteResult = ''
+
+        const getFileName = (path) => {
+            let fileName = path;
+            while (fileName.indexOf("/") >= 0) {
+                fileName = fileName.slice(fileName.indexOf("/") + 1)
+            }
+            return fileName.slice(0, fileName.indexOf("."))
+        }
+
         if (photo) {
-            cloud.cloudinary.uploader.destroy(photo.slice(0, photo.indexOf(".jpg")), function (error, result) {
+            cloud.cloudinary.uploader.destroy(getFileName(photo)), function (error, result) {
                 if (error) {
                     console.log(error)
                     deleteResult = error.message
@@ -358,10 +367,10 @@ const handleDeletePost = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ ok: false, msg: error.message })
+    console.log(error)
+    return res.status(500).json({ ok: false, msg: error.message })
 
-    }
+}
 
 }
 
