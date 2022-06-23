@@ -341,7 +341,7 @@ const handleDeletePost = async (req, res) => {
         // }
         const deleteResult = ''
         if (photo) {
-            await cloud.cloudinary.uploader.destroy(photo.slice(photo.indexOf(".jpg")), function (error, result) {
+            await cloud.cloudinary.uploader.destroy(photo.slice(0, photo.indexOf(".jpg")), function (error, result) {
                 if (error) {
                     console.log(error)
                     deleteResult = error.message
