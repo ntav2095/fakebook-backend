@@ -339,7 +339,7 @@ const handleDeletePost = async (req, res) => {
         //         }
         //     });
         // }
-        const deleteResult = ''
+        let deleteResult = ''
 
         const getFileName = (path) => {
             let fileName = path;
@@ -363,14 +363,11 @@ const handleDeletePost = async (req, res) => {
         }
 
         await post.destroy()
-        console.log("handle delete")
-
         return res.status(200).json({ ok: true, msg: "deleted", deletePhotoRes: deleteResult })
 
     } catch (error) {
         console.log(error)
         return res.status(500).json({ ok: false, msg: error.message })
-
     }
 
 }
