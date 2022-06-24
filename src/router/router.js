@@ -36,7 +36,7 @@ router.post('/api/post/add', verifyJWT, cloud.uploadCloud.single('photo'), contr
 // router.post('/api/post/add', verifyJWT, upload.single('photo'), controllers.addPost) // thêm 1 post
 router.post('/api/post/comment', verifyJWT, controllers.handleComment) // post vì cần biết ai cmt, like
 router.post('/api/post/like', verifyJWT, controllers.handleLikePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
-router.post('/api/post/delete/:id', verifyJWT, controllers.handleDeletePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
+router.post('/api/post/delete', verifyJWT, controllers.handleDeletePost) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý
 
 // SEARCH
 router.get('/api/search/:query', verifyJWT, handleRefreshToken, controllers.handleSearch) // post vì cần biết ai cmt, like; nếu get thì tự nhiên gõ link vào là like thì vô lý

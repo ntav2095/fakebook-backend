@@ -319,7 +319,7 @@ const getAPost = async (req, res) => {
 const handleDeletePost = async (req, res) => {
     try {
         const email = req.email;
-        const { id } = req.params
+        const { id } = req.body
 
         const post = await Post.findOne({ where: { id: id, email: email } })
         if (!post) return res.status(400).json({ ok: false, msg: "Post does not exist" })
