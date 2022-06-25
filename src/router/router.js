@@ -25,7 +25,7 @@ router.post('/api/notifications/delete-all', verifyJWT, controllers.deleteAllNot
 router.get('/api/post/get-all/:offset', verifyJWT, controllers.getAllPost)
 router.get('/api/post/user/:email/:offset', verifyJWT, controllers.getUserPost)
 router.get('/api/post/get-one/:id', verifyJWT, controllers.getAPost)
-router.post('/api/post/add', verifyJWT, cloud.uploadCloud.single('photo'), controllers.addPost) / st
+router.post('/api/post/add', verifyJWT, cloud.uploadCloud.single('photo'), controllers.addPost)
 router.post('/api/post/comment', verifyJWT, controllers.handleComment)
 router.post('/api/post/like', verifyJWT, controllers.handleLikePost)
 router.post('/api/post/delete', verifyJWT, controllers.handleDeletePost)
