@@ -280,7 +280,7 @@ const addPost = async (req, res) => {
     try {
         const { userID, name, avatar, time, text, likes, comments, shares } = JSON.parse(req.body.postItem)
 
-        if (services.isMissing(userID, name, avatar, time)) return res.status(200).json({ ok: false, msg: "Missing post's userID/name/avatar" })
+        if (services.isMissing(userID, name, avatar, time)) return res.status(400).json({ ok: false, msg: "Missing post's userID/name/avatar" })
 
         let photo = ''
         const file = req.file
@@ -294,7 +294,7 @@ const addPost = async (req, res) => {
             likes: x, comments: x, shares: x, email: req.email
         })
 
-        return res.status(200).json({ ok: true, msg: "Post's added", newPostID: result.id, photo: photo })
+        return res.status(200).json({ ok: true, msg: "Post's added", data: result })
     } catch (error) {
         return res.status(500).json({ ok: false, msg: error.message })
     }
