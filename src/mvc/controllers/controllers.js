@@ -408,7 +408,6 @@ const handleLikePost = async (req, res) => {
     try {
         const authEmail = req.email
         const { postID, time, type } = req.body
-        console.log(postID, time, type)
         if (!postID || !time || !type) return res.status(400).json({ ok: false, msg: "handleLikePost controller: Missing params " })
 
         const giver = await User.findOne({ where: { email: authEmail } })
@@ -416,9 +415,9 @@ const handleLikePost = async (req, res) => {
 
         let likes = JSON.parse(post.likes)
         if (!likes.length) {
-            likes = [{ userID: giver.id, name: giver.name }]
+            likes = [{ userID: giver.id, name: giver.name, email: giver.email }]
         } else {
-            likes = type === 'like' ? [...likes, { userID: giver.id, name: giver.name }] : likes.filter(item => item.userID !== giver.id)
+            likes = type === 'like' ? [...likes, { userID: giver.id, name: giver.name, email: giver.email }] : likes.filter(item => item.userID !== giver.id)
         }
 
         post.likes = JSON.stringify(likes)
