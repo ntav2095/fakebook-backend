@@ -294,7 +294,20 @@ const addPost = async (req, res) => {
             likes: x, comments: x, shares: x, email: req.email
         })
 
-        return res.status(200).json({ ok: true, msg: "Post's added", data: result })
+        const post = {
+            id: result.id,
+            name: result.name,
+            text: result.text,
+            time: result.time,
+            avatar: result.avatar,
+            likes: result.likes ? JSON.parse(result.likes) : [],
+            comments: result.comments ? JSON.parse(result.comments) : [],
+            photo: result.photo,
+            email: result.email,
+            showComment: false
+        }
+
+        return res.status(200).json({ ok: true, msg: "Post's added", data: post })
     } catch (error) {
         return res.status(500).json({ ok: false, msg: error.message })
     }
