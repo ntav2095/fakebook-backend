@@ -216,7 +216,6 @@ const getPost = (id) => {
     })
 }
 
-
 const handleSearch = (query) => {
     return new Promise(async (res, rej) => {
         try {
@@ -251,7 +250,6 @@ const handleSearch = (query) => {
 }
 
 // FRIENDS
-
 const getFriendRequest = (friendRequest) => {
     return new Promise(async (res, rej) => {
         try {
@@ -288,8 +286,6 @@ const getFriends = (frArray) => {
         }
     })
 }
-
-
 
 module.exports = {
     hashPwd,

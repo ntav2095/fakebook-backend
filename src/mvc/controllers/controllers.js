@@ -132,6 +132,7 @@ const getUser = async (req, res) => {
         const authEmail = req.email
         const { email } = req.params
         const user = await User.findOne({ where: { email: email } })
+        const auther = await User.findOne({ where: { email: authEmail } })
         if (!user) return res.status(404).json({ ok: false, notFound: true, msg: "From getUser controller: user not found" })
 
         const friends = await services.getFriends(JSON.parse(user.friends))
@@ -142,8 +143,9 @@ const getUser = async (req, res) => {
         // note: 
         // 0: yourself
         // 1: friend
-        // 2: dang gui loi moi ket ban cho ban
-        // 3: ban dang gui loi moi ket ban cho ho
+        // 2:  ban dang gui loi moi ket ban cho ho
+        // 3: dang de nghi ket ban voi ban 
+        // 4: khong la j ca
         let relationsship = ''
         if (email === authEmail) {
             relationsship = 0
@@ -151,8 +153,10 @@ const getUser = async (req, res) => {
             relationsship = 1
         } else if (JSON.parse(user.friendRequest).includes(authEmail)) {
             relationsship = 2
-        } else {
+        } else if (JSON.parse(auther.friendRequest).includes(email)) {
             relationsship = 3
+        } else {
+            relationsship = 4
         }
 
         return res.status(200).json({
@@ -543,7 +547,6 @@ const handleRemoveCoverPhoto = async (req, res) => {
             shares: [],
             time: time
         }
-        const x = JSON.stringify([])
         const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
 
         await user.save()
@@ -556,29 +559,31 @@ const handleRemoveCoverPhoto = async (req, res) => {
 
 const handleChangeAvatar = async (req, res) => {
     try {
-        const authEmail = req.email
-        const { userID, name, time, text, likes, comments, shares } = JSON.parse(req.body.postItem)
-
+        const email = req.email
+        const { time } = req.body
         const file = req.file
-        if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
-        const avatar = file.path
-        const user = await User.findOne({ where: { email: authEmail } })
-        user.avatar = avatar
 
-        const x = JSON.stringify([])
-        const result = await Post.create({
-            userID, text, photo: avatar, time, avatar, name,
-            likes: x, comments: x, shares: x, email: req.email
-        })
-        await user.save()
-        const userPosts = await Post.findAll({ where: { email: authEmail } })
-        for (let post of userPosts) {
-            post.avatar = user.avatar
-            await post.save()
+        if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
+        if (!time) return res.status(400).json({ ok: false, msg: "Missing time" })
+
+        const avatar = file.path
+        const user = await User.findOne({ where: { email: email } })
+        user.avatar = avatar
+        const postItem = {
+            userID: user.id,
+            name: user.name,
+            email: user.email,
+            avatar: avatar,
+            text: `${user.name} changed avatar`,
+            photo: avatar,
+            likes: [],
+            shares: [],
+            time: time
         }
 
-
-        return res.status(200).json({ ok: true, msg: "updated avatar", avatar: avatar })
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
+        await user.save()
+        return res.status(200).json({ ok: true, msg: "updated avatar", data: { ...postItem, id: result.id } })
     } catch (error) {
         return res.status(500).json({ ok: false, msg: error.message })
     }
@@ -586,20 +591,27 @@ const handleChangeAvatar = async (req, res) => {
 
 const handleRemoveAvatar = async (req, res) => {
     try {
-        const authEmail = req.email
-        const { userID, name, time, text, likes, comments, shares } = req.body.postItem
+        const email = req.email
+        const { time } = req.body
+        if (!time) return res.status(400).json({ ok: false, msg: 'missing time' })
 
-        const user = await User.findOne({ where: { email: authEmail } })
+        const user = await User.findOne({ where: { email: email } })
         user.avatar = ""
+        const postItem = {
+            userID: user.id,
+            name: user.name,
+            email: user.email,
+            avatar: '',
+            text: `${user.name} removed cover photo`,
+            photo: '',
+            likes: [],
+            shares: [],
+            time: time
+        }
 
-        const x = JSON.stringify([])
-        const result = await Post.create({
-            userID, text, photo: "", time, name,
-            likes: x, comments: x, shares: x, email: req.email
-        })
-
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
         await user.save()
-        return res.status(200).json({ ok: true, msg: "removed avatar" })
+        return res.status(200).json({ ok: true, msg: "removed avatar", data: { ...postItem, id: result.id } })
     } catch (error) {
         return res.status(500).json({ ok: false, msg: error.message })
     }
