@@ -495,7 +495,7 @@ const handleComment = async (req, res) => {
 const handleChangeCoverPhoto = async (req, res) => {
     try {
         const email = req.email
-        const { time } = JSON.parse(req.body.time)
+        const { time } = JSON.parse(req.body)
         const file = req.file
 
         if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
