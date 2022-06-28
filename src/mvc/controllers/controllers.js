@@ -112,7 +112,6 @@ const logout = async (req, res) => {
 }
 
 // USER
-
 const getUserPost = async (req, res) => {
     try {
         const reqEmail = req.params.email
@@ -130,6 +129,7 @@ const getUserPost = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
+        const authEmail = req.email
         const { email } = req.params
         const user = await User.findOne({ where: { email: email } })
         if (!user) return res.status(404).json({ ok: false, notFound: true, msg: "From getUser controller: user not found" })
@@ -137,6 +137,24 @@ const getUser = async (req, res) => {
         const friends = await services.getFriends(JSON.parse(user.friends))
         const friendRequest = await services.getFriendRequest(JSON.parse(user.friendRequest))
         const cookies = req.cookies ? req.cookies : "khong co cookies"
+
+        // determine relationship 
+        // note: 
+        // 0: yourself
+        // 1: friend
+        // 2: dang gui loi moi ket ban cho ban
+        // 3: ban dang gui loi moi ket ban cho ho
+        let relationsship = ''
+        if (email === authEmail) {
+            relationsship = 0
+        } else if (JSON.parse(user.friends).includes(authEmail)) {
+            relationsship = 1
+        } else if (JSON.parse(user.friendRequest).includes(authEmail)) {
+            relationsship = 2
+        } else {
+            relationsship = 3
+        }
+
         return res.status(200).json({
             ok: true,
             data: {
@@ -149,7 +167,8 @@ const getUser = async (req, res) => {
                 friendRequest: friendRequest,
                 avatar: user.avatar,
                 coverPhoto: user.coverPhoto,
-                cookies: JSON.stringify(cookies)
+                cookies: JSON.stringify(cookies),
+                relationship: relationsship
             }
         })
 
@@ -273,7 +292,6 @@ const handleSearch = async (req, res) => {
         return res.status(500).json({ ok: false, msg: error.msg })
     }
 }
-
 
 // POST
 const addPost = async (req, res) => {
@@ -441,7 +459,6 @@ const handleLikePost = async (req, res) => {
 }
 
 const handleComment = async (req, res) => {
-    console.log("COMMMENT....")
 
     try {
         const { postID, userID, text, time, avatar } = req.body
@@ -454,7 +471,6 @@ const handleComment = async (req, res) => {
 
         await foundPost.save()
 
-
         // handle notifications
         const receiver = await User.findOne({ where: { email: foundPost.email } })
         const commenter = await User.findOne({ where: { email: req.email } })
@@ -462,9 +478,7 @@ const handleComment = async (req, res) => {
             const notiItem = { name: commenter.name, avatar: commenter.avatar, type: "comment", time: time, seen: false, postID: postID, id: uuidv4() }
             let notifications = JSON.parse(receiver.notifications)
             notifications.push(notiItem)
-
             receiver.notifications = JSON.stringify(notifications)
-
 
             await receiver.save()
         }
@@ -480,23 +494,31 @@ const handleComment = async (req, res) => {
 // AVATAR AND COVER PHOTO
 const handleChangeCoverPhoto = async (req, res) => {
     try {
-        const authEmail = req.email
-        const { userID, name, avatar, time, text, likes, comments, shares } = JSON.parse(req.body.postItem)
-
+        const email = req.email
+        const { time } = JSON.parse(req.body.time)
         const file = req.file
-        if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
-        const coverPhoto = file.path
-        const user = await User.findOne({ where: { email: authEmail } })
-        user.coverPhoto = coverPhoto
 
-        const x = JSON.stringify([])
-        const result = await Post.create({
-            userID, text, photo: coverPhoto, time, avatar, name,
-            likes: x, comments: x, shares: x, email: req.email
-        })
-        console.log(JSON.stringify(result))
+        if (!file) return res.status(400).json({ ok: false, msg: "Missing file" })
+        if (!time) return res.status(400).json({ ok: false, msg: "Missing time" })
+
+        const coverPhoto = file.path
+        const user = await User.findOne({ where: { email: email } })
+        user.coverPhoto = coverPhoto
+        const postItem = {
+            userID: user.id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            text: `${user.name} change cover photo`,
+            photo: coverPhoto,
+            likes: [],
+            shares: [],
+            time: time
+        }
+
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
         await user.save()
-        return res.status(200).json({ ok: true, msg: "updated coverphoto", coverPhoto: coverPhoto })
+        return res.status(200).json({ ok: true, msg: "updated coverphoto", data: { ...postItem, id: result.id } })
     } catch (error) {
         return res.status(500).json({ ok: false, msg: error.message })
     }
@@ -504,20 +526,28 @@ const handleChangeCoverPhoto = async (req, res) => {
 
 const handleRemoveCoverPhoto = async (req, res) => {
     try {
-        const authEmail = req.email
-        const { userID, name, avatar, time, text, likes, comments, shares } = req.body.postItem
+        const email = req.email
+        const { time } = req.body.time
+        if (!time) return res.status(400).json({ ok: false, msg: 'missing time' })
 
-        const user = await User.findOne({ where: { email: authEmail } })
+        const user = await User.findOne({ where: { email: email } })
         user.coverPhoto = ""
-
+        const postItem = {
+            userID: user.id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            text: `${user.name} removed cover photo`,
+            photo: '',
+            likes: [],
+            shares: [],
+            time: time
+        }
         const x = JSON.stringify([])
-        const result = await Post.create({
-            userID, text, photo: "", time, avatar, name,
-            likes: x, comments: x, shares: x, email: req.email
-        })
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
 
         await user.save()
-        return res.status(200).json({ ok: true, msg: "removed coverphoto" })
+        return res.status(200).json({ ok: true, msg: "removed coverphoto", data: { ...postItem, id: result.id } })
     } catch (error) {
         return res.status(500).json({ ok: false, msg: error.message })
     }
@@ -630,6 +660,7 @@ module.exports = {
     //  likePost, profilePage, getContacts,
     // handleFormData, 
     getUser, handleFriendRequest,
+    getProfile,
     handleChangeCoverPhoto, handleRemoveCoverPhoto, handleChangeAvatar, handleRemoveAvatar,
     addPost, handleLikePost, handleComment, getAPost,
     getAllPost, getUserPost, handleDeletePost,

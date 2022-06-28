@@ -21,7 +21,7 @@ User.init({
     },
     friends: {
         type: DataTypes.TEXT,
-        defaultValue: "[]"
+        defaultValue: "[]" // [email,...]
     },
     notifications: {
         type: DataTypes.TEXT,
