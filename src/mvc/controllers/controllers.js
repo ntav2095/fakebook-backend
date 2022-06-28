@@ -527,7 +527,7 @@ const handleChangeCoverPhoto = async (req, res) => {
 const handleRemoveCoverPhoto = async (req, res) => {
     try {
         const email = req.email
-        const { time } = req.body.time
+        const { time } = req.body
         if (!time) return res.status(400).json({ ok: false, msg: 'missing time' })
 
         const user = await User.findOne({ where: { email: email } })
