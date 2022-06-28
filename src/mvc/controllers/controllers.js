@@ -660,7 +660,6 @@ module.exports = {
     //  likePost, profilePage, getContacts,
     // handleFormData, 
     getUser, handleFriendRequest,
-    getProfile,
     handleChangeCoverPhoto, handleRemoveCoverPhoto, handleChangeAvatar, handleRemoveAvatar,
     addPost, handleLikePost, handleComment, getAPost,
     getAllPost, getUserPost, handleDeletePost,
