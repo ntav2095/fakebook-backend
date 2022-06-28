@@ -517,10 +517,11 @@ const handleChangeCoverPhoto = async (req, res) => {
             photo: coverPhoto,
             likes: [],
             shares: [],
+            comments: [],
             time: time
         }
 
-        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]), comments: JSON.stringify([]) })
         await user.save()
         return res.status(200).json({ ok: true, msg: "updated coverphoto", data: { ...postItem, id: result.id } })
     } catch (error) {
@@ -545,9 +546,10 @@ const handleRemoveCoverPhoto = async (req, res) => {
             photo: '',
             likes: [],
             shares: [],
+            comments: [],
             time: time
         }
-        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]), comments: JSON.stringify([]) })
 
         await user.save()
         return res.status(200).json({ ok: true, msg: "removed coverphoto", data: { ...postItem, id: result.id } })
@@ -578,10 +580,11 @@ const handleChangeAvatar = async (req, res) => {
             photo: avatar,
             likes: [],
             shares: [],
+            comments: [],
             time: time
         }
 
-        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]), comments: JSON.stringify([]) })
         await user.save()
         return res.status(200).json({ ok: true, msg: "updated avatar", data: { ...postItem, id: result.id } })
     } catch (error) {
@@ -606,10 +609,11 @@ const handleRemoveAvatar = async (req, res) => {
             photo: '',
             likes: [],
             shares: [],
+            comments: [],
             time: time
         }
 
-        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]) })
+        const result = await Post.create({ ...postItem, likes: JSON.stringify([]), shares: JSON.stringify([]), comments: JSON.stringify([]) })
         await user.save()
         return res.status(200).json({ ok: true, msg: "removed avatar", data: { ...postItem, id: result.id } })
     } catch (error) {
