@@ -11,7 +11,7 @@ router.post('/api/logout', controllers.logout)
 
 // USER
 router.get('/api/user/get-user/:email', verifyJWT, controllers.getUser)
-router.post('/api/user/friend-request', verifyJWT, cloud.uploadCloud.single('photo'), controllers.handleFriendRequest)
+router.post('/api/user/friend-request', verifyJWT, controllers.handleFriendRequest)
 router.post('/api/user/change-cover-photo', verifyJWT, cloud.uploadCloud.single('photo'), controllers.handleChangeCoverPhoto)
 router.post('/api/user/change-avatar', verifyJWT, cloud.uploadCloud.single('photo'), controllers.handleChangeAvatar)
 router.post('/api/user/remove-cover-photo', verifyJWT, controllers.handleRemoveCoverPhoto)

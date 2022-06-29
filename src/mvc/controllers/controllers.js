@@ -268,12 +268,33 @@ const handleFriendRequest = async (req, res) => {
         const recFriendRequest = await services.getFriendRequest(JSON.parse(receiver.friendRequest))
         const recFriends = await services.getFriends(JSON.parse(receiver.friends))
 
+        let relationship = 0
+        switch (type) {
+            case 'gui':
+                relationship = 2
+                break;
+            case 'dongy':
+                relationship = 1
+                break;
+            case 'huygui':
+                relationship = 4
+                break;
+            case 'tuchoi':
+                relationship = 4
+                break;
+            case 'huyketban':
+                relationship = 4
+                break;
+            default: 0
+        }
+
         return res.status(200).json({
             ok: true,
-            authFriendRequest: authFriendRequest,
-            recFriendRequest: recFriendRequest,
-            authFriends: authFriends,
-            recFriends: recFriends
+            data: {
+                relationship: relationship,
+                authFriends: authFriends,
+                recFriends: recFriends
+            }
         })
 
 
